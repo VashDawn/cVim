@@ -3,10 +3,10 @@
 #   This setup file is based on spf13-vim's bootstrap.sh.
 #   Thanks for spf13-vim.
 
-app_name='space-vim'
+app_name='vim-cc'
 dot_spacevim="$VIM/.spacevim"
-[ -z "$APP_PATH" ] && APP_PATH="$VIM/.space-vim"
-[ -z "$REPO_URI" ] && REPO_URI='https://github.com/liuchengxu/space-vim.git'
+[ -z "$APP_PATH" ] && APP_PATH="$VIM/vim-cc"
+[ -z "$REPO_URI" ] && REPO_URI='https://github.com/vashdawn/vim-cc.git'
 [ -z "$REPO_BRANCH" ] && REPO_BRANCH='master'
 debug_mode='0'
 [ -z "$VIM_PLUG_PATH" ] && VIM_PLUG_PATH="$VIM/vimfiles/autoload"
@@ -151,7 +151,7 @@ generate_dot_spacevim(){
         touch "$dot_spacevim"
         (
         cat <<DOTSPACEVIM
-" You can enable the existing layers in space-vim and
+" You can enable the existing layers in vim-cc and
 " exclude the partial plugins in a certain layer.
 " The command Layer and Exlcude are vaild in the function Layers().
 function! Layers()
