@@ -1,4 +1,4 @@
 MP 'liuchengxu/space-vim-dark'
 
-MP 'liuchengxu/vim-better-default'
+MP 'vashdawn/cVim-default'
 
