@@ -28,7 +28,7 @@ endfor
 nnoremap <silent><Leader>bh :Startify<CR>
 
 " vim-better-whitespace
-nnoremap <Leader>xd :StripWhitespace<CR>
+" nnoremap <Leader>xd :StripWhitespace<CR>
 
 " easy-motion
 " Default key bindings:
