@@ -19,8 +19,8 @@
 
 " vim-easy-align {
     " Start interactive EasyAlign in visual mode (e.g. vipxa)
-    xmap <Leader>xa <Plug>(EasyAlign)
+    " xmap <Leader>xa <Plug>(EasyAlign)
 
     " Start interactive EasyAlign for a motion/text object (e.g. xaip)
-    nmap <Leader>xa <Plug>(EasyAlign)
+    " nmap <Leader>xa <Plug>(EasyAlign)
 " }
