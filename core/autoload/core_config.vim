@@ -1,6 +1,6 @@
 let s:spacevim_layers_dir = '/layers'
 let s:spacevim_private_layers_dir = '/private'
-let s:dot_spacevim = $VIM.'/.spacevim'
+let s:dot_cvim = $VIM.'/.cvim'
 
 let s:spacevim_tab = get(s:, 'spacevim_tab', -1)
 let s:spacevim_buf = get(s:, 'spacevim_buf', -1)
@@ -264,19 +264,19 @@ function! s:syntax()
     hi def link LayerNotLoaded Comment
 endfunction
 
-function! s:check_dot_spacevim()
-    if filereadable(expand(s:dot_spacevim))
-        call s:Source(s:dot_spacevim)
+function! s:check_dot_cvim()
+    if filereadable(expand(s:dot_cvim))
+        call s:Source(s:dot_cvim)
         return 1
     else
-        echom '.spacevim does not exist!!!'
+        echom '.cvim does not exist!!!'
         return 0
     endif
 endfunction
 
 function! core_config#end()
 
-    if s:check_dot_spacevim()
+    if s:check_dot_cvim()
 
         call Layers()
 
@@ -383,7 +383,7 @@ endfunction
 
 function! s:post_user_config()
 
-    autocmd BufRead,BufNewFile *.spacevim setlocal filetype=vim
+    autocmd BufRead,BufNewFile *.cvim setlocal filetype=vim
 
     " airline
     if !exists('g:airline_powerline_fonts')
