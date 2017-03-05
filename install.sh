@@ -184,8 +184,8 @@ function! UserConfig()
     " color desert
 
 endfunction
-DOTSPACEVIM
-) >"$dot_spacevim"
+DOTCVIM
+) >"$dot_cvim"
 
     fi
 }
@@ -207,7 +207,7 @@ create_symlinks "$APP_PATH" \
 sync_vim_plug   "$VIM_PLUG_PATH" \
                 "$VIM_PLUG_URL"
 
-generate_dot_spacevim
+generate_dot_cvim
 
 setup_vim_plug
 
