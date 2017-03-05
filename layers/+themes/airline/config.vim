@@ -1,7 +1,7 @@
 scriptencoding=utf-8
 
 " vim-airline {
-    let g:airline_theme='violet'
+    let g:airline_theme='dark'
     let g:Powerline_symbols='fancy'
     let g:airline#extensions#tabline#enabled=1
     let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -28,4 +28,7 @@ scriptencoding=utf-8
     " error information.
     let g:airline#extensions#ale#error_symbol = '•'
     let g:airline#extensions#ale#warning_symbol = '•'
+
+
+    let g:airline_powerline_fonts=1
 " }

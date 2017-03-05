@@ -60,7 +60,7 @@ nmap <Leader>jw <Plug>(easymotion-overwin-w)
 " nerdtree
 nnoremap <F4> :NERDTreeToggle<CR>
 inoremap <F4> <ESC>:NERDTreeToggle<CR>
-nnoremap <Leader>ft :NERDTreeToggle<CR>
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
 let s:lines=&lines
 let s:columns=&columns
