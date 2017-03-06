@@ -4,7 +4,7 @@
 #   Thanks for spf13-vim.
 
 app_name='cVim'
-dot_cvim="$VIM/.cvim"
+dot_cvim="$HOME/.cvim"
 [ -z "$APP_PATH" ] && APP_PATH="$VIM/cVim"
 [ -z "$REPO_URI" ] && REPO_URI='https://github.com/vashdawn/cVim.git'
 [ -z "$REPO_BRANCH" ] && REPO_BRANCH='master'
