@@ -39,14 +39,5 @@ set runtimepath+=$VIM/cVim/core
 call core_config#begin()
 
 Layer 'spacevim'
-Layer 'fzf'
-Layer 'unite'
-Layer 'better-defaults'
-Layer 'syntax-checking'
-Layer 'tmux'
-Layer 'programming'
-Layer 'airline'
-Layer 'git'
-Layer 'text-align'
 
 call core_config#end()
