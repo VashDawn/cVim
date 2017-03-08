@@ -1,0 +1,419 @@
+" Environment {
+
+    " Identify platform {
+        silent function! OSX()
+            return has('macunix')
+        endfunction
+        silent function! LINUX()
+            return has('unix') && !has('macunix') && !has('win32unix')
+        endfunction
+        silent function! WINDOWS()
+            return  (has('win32') || has('win64'))
+        endfunction
+    " }
+
+    " Basics {
+        set nocompatible        " Must be first line
+        " always use English menu
+        " NOTE: this must before filetype off, otherwise it won't work
+        set langmenu=none
+        if !WINDOWS()
+            set shell=/bin/sh
+        endif
+    " }
+
+    " Windows Compatible {
+        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+        " across (heterogeneous) systems easier.
+        if WINDOWS()
+          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+        endif
+    " }
+    
+    "       " Arrow Key Fix {
+    "           " https://github.com/spf13/spf13-vim/issues/780
+    "           if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
+    "               inoremap <silent> <C-[>OC <RIGHT>
+    "           endif
+    "       " }
+
+" }
+
+
+
+" Language and encoding setup {
+    " use English for anaything in vim-editor.
+    if WINDOWS()
+        silent exec 'language english'
+    elseif OSX()
+        silent exec 'language en_US'
+    else
+        let s:uname = system("uname -s")
+        if s:uname == "Darwin\n"
+            " in mac-terminal
+            silent exec 'language en_US'
+        else
+            " in linux-terminal
+            silent exec 'language en_US.utf8'
+        endif
+    endif
+
+    " try to set encoding to utf-8
+    if WINDOWS()
+        " Be nice and check for multi_byte even if the config requires
+        " multi_byte support most of the time
+        if has('multi_byte')
+            " Windows cmd.exe still uses cp850. If Windows ever moved to
+            " Powershell as the primary terminal, this would be utf-8
+            set termencoding=cp850
+            " Let Vim use utf-8 internally, because many scripts require this
+            set encoding=utf-8
+            setglobal fileencoding=utf-8
+            " Windows has traditionally used cp1252, so it's probably wise to
+            " fallback into cp1252 instead of eg. iso-8859-15.
+            " Newer Windows files might contain utf-8 or utf-16 LE so we might
+            " want to try them first.
+            set fileencodings=ucs-bom,utf-8,utf-16le,cp1252,iso-8859-15,cp936
+        endif
+    else
+        " set default encoding to utf-8
+        set encoding=utf-8
+        set termencoding=utf-8
+    endif
+    scriptencoding utf-8
+"}
+
+
+
+" Use before config if available {
+    if filereadable(expand($VIM . "/.vimrc.before"))
+        source $VIM/vimrc.before
+    endif
+" }
+
+
+
+" Use bundles config {
+    if filereadable(expand($VIM . "/.vimrc.bundles"))
+        source $VIM/.vimrc.bundles
+    endif
+" }
+
+
+
+" General {
+
+    set background=dark         " Assume a dark background
+
+
+    " if !has('gui')
+        "set term=$TERM          " Make arrow and other keys work
+    " endif
+    filetype plugin indent on   " Automatically detect file types.
+    syntax on                   " Syntax highlighting
+    set mouse=a                 " Automatically enable mouse usage
+    set mousehide               " Hide the mouse cursor while typing
+    scriptencoding utf-8
+
+    if has('clipboard')
+        if has('unnamedplus')  " When possible use + register for copy-paste
+            set clipboard=unnamed,unnamedplus
+        else         " On mac and Windows, use * register for copy-paste
+            set clipboard=unnamed
+        endif
+    endif
+
+    " Most prefer to automatically switch to the current file directory when
+    " a new buffer is opened; to prevent this behavior, add the following to
+    " your .vimrc.before.local file:
+    "   let g:no_autochdir = 1
+    if !exists('g:no_autochdir')
+        autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+        " Always switch to the current file directory
+    endif
+
+    "set autowrite                       " Automatically write a file when leaving a modified buffer
+    set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+    set virtualedit=onemore             " Allow for cursor beyond last character
+    set history=1000                    " Store a ton of history (default is 20)
+    " set spell                           " Spell checking on
+    set hidden                          " Allow buffer switching without saving
+    set iskeyword-=.                    " '.' is an end of word designator
+    set iskeyword-=#                    " '#' is an end of word designator
+    set iskeyword-=-                    " '-' is an end of word designator
+
+    " Instead of reverting the cursor to the last position in the buffer, we
+    " set it to the first line when editing a git commit message
+    au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+    " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
+    " Restore cursor to file position in previous editing session
+    " To disable this, add the following to your .vimrc.before.local file:
+    "   let g:no_restore_cursor = 1
+    if !exists('g:no_restore_cursor')
+        function! ResCur()
+            if line("'\"") <= line("$")
+                silent! normal! g`"
+                return 1
+            endif
+        endfunction
+
+        augroup resCur
+            autocmd!
+            autocmd BufWinEnter * call ResCur()
+        augroup END
+    endif
+
+    " Setting up the directories {
+        set backup                  " Backups are nice ...
+        if has('persistent_undo')
+            set undofile                " So is persistent undo ...
+            set undolevels=1000         " Maximum number of changes that can be undone
+            set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+        endif
+
+        " To disable views add the following to your .vimrc.before.local file:
+        "   let g:no_views = 1
+        if !exists('g:no_views')
+            " Add exclusions to mkview and loadview
+            " eg: *.*, svn-commit.tmp
+            let g:skipview_files = [
+                \ '\[example pattern\]'
+                \ ]
+        endif
+    " }
+
+" }
+
+
+
+" Vim UI {
+
+    if filereadable(expand($VIM . "/vimfiles/bundle/gruvbox/colors/gruvbox.vim"))
+        color gruvbox             " Load a colorscheme
+    endif
+
+    set tabpagemax=15               " Only show 15 tabs
+    set showmode                    " Display the current mode
+
+    set cursorline                  " Highlight current line
+
+    highlight clear SignColumn      " SignColumn should match background
+    highlight clear LineNr          " Current line number row will have same background color in relative mode
+    "highlight clear CursorLineNr    " Remove highlight color from current line number
+
+    if has('cmdline_info')
+        set ruler                   " Show the ruler
+        set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
+        set showcmd                 " Show partial commands in status line and
+                                    " Selected characters/lines in visual mode
+    endif
+
+    if has('statusline')
+        set laststatus=2
+
+        " Broken down into easily includeable segments
+        set statusline=%<%f\                     " Filename
+        set statusline+=%w%h%m%r                 " Options
+        if !exists('g:override_bundles')
+            set statusline+=%{fugitive#statusline()} " Git Hotness
+        endif
+        set statusline+=\ [%{&ff}/%Y]            " Filetype
+        set statusline+=\ [%{getcwd()}]          " Current dir
+        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
+
+    set backspace=indent,eol,start  " Backspace for dummies
+    set linespace=0                 " No extra spaces between rows
+    set number                      " Line numbers on
+    set relativenumber              " RelativeNumbers on
+    set showmatch                   " Show matching brackets/parenthesis
+    set incsearch                   " Find as you type search
+    set hlsearch                    " Highlight search terms
+    set winminheight=0              " Windows can be 0 line high
+    set ignorecase                  " Case insensitive search
+    set smartcase                   " Case sensitive when uc present
+    set wildmenu                    " Show list instead of just completing
+    set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+    set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+    set scrolljump=1                " Lines to scroll when cursor leaves screen
+    set scrolloff=3                 " Minimum lines to keep above and below cursor
+    set foldenable                  " Auto fold code
+    set list
+    set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
+" }
+
+
+
+" Formatting {
+
+    set nowrap                      " Do not wrap long lines
+    set autoindent                  " Indent at the same level of the previous line
+    set shiftwidth=4                " Use indents of 4 spaces
+    set expandtab                   " Tabs are spaces, not tabs
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=4               " Let backspace delete indent
+    set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+    "       set splitright                  " Puts new vsplit windows to the right of the current
+    "       set splitbelow                  " Puts new split windows to the bottom of the current
+    "set matchpairs+=<:>             " Match, to be used with %
+    "       set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+    " Remove trailing whitespaces and ^M chars
+    " To disable the stripping of whitespace, add the following to your
+    " .vimrc.before.local file:
+    "   let g:spf13_keep_trailing_whitespace = 1
+    autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
+    "autocmd FileType go autocmd BufWritePre <buffer> Fmt
+    autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+    autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
+    " preceding line best in a plugin but here for now.
+
+    autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+
+    " Workaround vim-commentary for Haskell
+    autocmd FileType haskell setlocal commentstring=--\ %s
+    " Workaround broken colour highlighting in Haskell
+    autocmd FileType haskell,rust setlocal nospell
+
+" }
+
+
+
+" Desc: Appearance   Vim UI
+" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+if !has('gui_running')
+    set t_Co=256 " make sure our terminal use 256 color
+endif
+                                                          
+
+" Window Size
+" ------------------------------------------
+if has('gui_running')
+    if exists('+lines')
+        set lines=40
+    endif
+    if exists('+columns')
+        set columns=130
+    endif
+endif
+
+" GUI configuration
+" ------------------------------------------
+set renderoptions=type:directx,renmode:5,taamode:1
+set go-=T
+set go+=a
+set go+=b
+
+
+" General
+" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+"set path=.,/usr/include/*,, " where gf, ^Wf, :find will search
+set backup " make backup file and leave it around
+
+" setup back and swap directory
+let vim_data_dir = $HOME.'/.vim/'
+let data_dir = vim_data_dir . 'data/'
+let backup_dir = data_dir . 'backup'
+let swap_dir = data_dir . 'swap'
+if finddir(vim_data_dir) == ''
+    silent call mkdir(vim_data_dir)
+endif
+if finddir(data_dir) == ''
+    silent call mkdir(data_dir)
+endif
+if finddir(backup_dir) == ''
+    silent call mkdir(backup_dir)
+endif
+if finddir(swap_dir) == ''
+    silent call mkdir(swap_dir)
+endif
+unlet backup_dir
+unlet swap_dir
+unlet data_dir
+unlet vim_data_dir
+
+set backupdir=$HOME/.vim/data/backup " where to put backup file
+set directory=$HOME/.vim/data/swap " where to put swap file
+
+" Redefine the shell redirection operator to receive both the stderr messages and stdout messages
+set shellredir=>%s\ 2>&1
+set history=50 " keep 50 lines of command line history
+set updatetime=1000 " default = 4000
+set autoread " auto read same-file change ( better for vc/vim change )
+set maxmempattern=1000 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
+
+
+" Desc: Main Configuration    Variable settings ( set all)
+" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13:cANSI
+
+" syntax on
+
+set number
+set relativenumber
+
+
+
+
+" Desc: Text Edit
+" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+set ai
+set si
+set backspace=indent,eol,start
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set ve=block
+
+set clipboard+=unnamed
+
+set textwidth=200
+
+set nowrap
+
+
+" Desc: Search
+" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+set showmatch
+set incsearch
+" set hlsearch
+set ignorecase
+set smartcase
+
+
+" Desc: Key Mappings
+" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+" Leader Key Mappings
+" ------------------------------------------------------------
+let mapleader = "\<space>"
+nnoremap <leader>q :q<cr>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>x :x<cr>
+
+nnoremap tt :tabnew<cr>
+
+" Other Key Mappings
+" ------------------------------------------------------------
+inoremap jj <Esc>
+if has('gui_running')
+    map <m-space> :simalt ~<cr>
+endif
+
+" Mappings for Plugins
+" ---------------------------------------------------
+map <leader>n :NERDTreeToggle<cr>
+
+
+" Desc: Abbreviations
+" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+:ca vsh VimShell
+:ca tt tabnew
+
+
+
+" Speed Up
+" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

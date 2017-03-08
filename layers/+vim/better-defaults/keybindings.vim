@@ -85,5 +85,5 @@ endfunction
 
 augroup SPACEVIM_GUI
     autocmd!
-    autocmd GUIEnter * nnoremap <Leader>wm :call <SID>full_screen_toggle()<CR>
+    " autocmd GUIEnter * nnoremap <Leader>wm :call <SID>full_screen_toggle()<CR>
 augroup END

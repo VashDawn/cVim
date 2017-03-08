@@ -34,14 +34,20 @@ augroup SPACEVIM_BASIC
     endfunction
     " http://stackoverflow.com/questions/5933568/disable-blinking-at-the-first-last-line-of-the-file
     autocmd GUIEnter * set t_vb=
+
     if !core_config#LayerLoaded('chinese')
-        silent! set $LANG = 'en_US'
-        silent! let langmenu=en_US
+        " silent! set $LANG = 'en_US'
+        " silent! let langmenu=en_US
+
+        silent! let langmenu=none
+        silent! exec 'language english'
+
         source $VIMRUNTIME/delmenu.vim
         source $VIMRUNTIME/menu.vim
 
         if g:WINDOWS
-            set guifont=Consolas:h13
+            " set guifont=Consolas:h13
+            set guifont=DejaVu_Sans_Mono_for_Powerline:h13:cANSI
         endif
     endif
 augroup END
