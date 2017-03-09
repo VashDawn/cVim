@@ -4,7 +4,11 @@ scriptencoding utf-8
 " or the colorscheme can overwrite your highlighting.
 " silent! color space-vim-dark
 
-silent! color gruvbox
+if has('gui_running')
+    silent! color gruvbox
+else
+    silent! color desert
+endif
 
 augroup SPACEVIM_BASIC
     autocmd!
