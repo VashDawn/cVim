@@ -8,6 +8,7 @@ if has('gui_running')
     silent! color gruvbox
 else
     silent! color desert
+    set t_Co=256 " make sure our terminal use 256 color
 endif
 
 augroup SPACEVIM_BASIC
