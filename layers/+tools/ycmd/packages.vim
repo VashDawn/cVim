@@ -7,11 +7,18 @@ function! BuildYCM(info)
     " - status: 'installed', 'updated', or 'unchanged'
     " - force:  set on PlugInstall! or PlugUpdate!
     if a:info.status ==# 'installed' || a:info.force
-        !./install.py --clang-completer
+        if !g:WINDOWS
+            !./install.py --clang-completer
+        else
+            !python ./install.py --clang-completer
     endif
 endfunction
 
-MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'on': [] }
+if !g:WINDOWS
+    MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'on': [] }
+else
+    MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'for': ['c', 'cpp', 'python', 'vim', 'js', 'go', 'sh'] }
+endif
 
 " Load YCM for specific filetypes
 function! s:invoke_ycm()
@@ -24,5 +31,7 @@ endfunction
 
 augroup LOAD_YCM
     autocmd!
-    autocmd InsertEnter * call s:invoke_ycm() | autocmd! LOAD_YCM
+    if !g:WINDOWS
+        autocmd InsertEnter * call s:invoke_ycm() | autocmd! LOAD_YCM
+    endif
 augroup END

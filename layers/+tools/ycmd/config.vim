@@ -9,7 +9,10 @@ scriptencoding utf-8
     let g:ycm_seed_identifiers_with_syntax=1
     let g:ycm_min_num_of_chars_for_completion=2
     " ycm_path_to_python_interpreter is important!
-    let g:ycm_path_to_python_interpreter='Python'
+    " Do not specify 'g:ycm_path_to_python_interpreter' in Windows.
+    if !g:WINDOWS
+        let g:ycm_path_to_python_interpreter='Python'
+    endif
 
 
     let g:ycm_autoclose_preview_window_after_completion = 1
