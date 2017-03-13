@@ -14,24 +14,20 @@ function! BuildYCM(info)
     endif
 endfunction
 
-if !g:WINDOWS
-    MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'on': [] }
-else
-    MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'for': ['c', 'cpp', 'python', 'vim', 'js', 'go', 'sh'] }
-endif
+MP 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'for': ['c', 'cpp', 'python', 'vim', 'js', 'go', 'sh'] }
 
-" Load YCM for specific filetypes
-function! s:invoke_ycm()
-    let l:supported = ['c', 'cpp', 'python', 'vim', 'js', 'go', 'sh']
-    let l:cur_ft = &filetype
-    if index(l:supported, l:cur_ft) > -1
-        call plug#load('YouCompleteMe')
-    endif
-endfunction
-
-augroup LOAD_YCM
-    autocmd!
-    if !g:WINDOWS
-        autocmd InsertEnter * call s:invoke_ycm() | autocmd! LOAD_YCM
-    endif
-augroup END
+" " Load YCM for specific filetypes
+" function! s:invoke_ycm()
+"     let l:supported = ['c', 'cpp', 'python', 'vim', 'js', 'go', 'sh']
+"     let l:cur_ft = &filetype
+"     if index(l:supported, l:cur_ft) > -1
+"         call plug#load('YouCompleteMe')
+"     endif
+" endfunction
+" 
+" augroup LOAD_YCM
+"     autocmd!
+"     if !g:WINDOWS
+"         autocmd InsertEnter * call s:invoke_ycm() | autocmd! LOAD_YCM
+"     endif
+" augroup END
