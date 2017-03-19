@@ -5,8 +5,17 @@ function! Layers()
 
     " Default layers, recommended!
     Layer 'fzf'
+
+
+    Layer 'ycmd'
     Layer 'unite'
     Layer 'better-defaults'
+    Layer 'syntax-checking'
+    Layer 'tmux'
+    Layer 'programming'
+    Layer 'airline'
+    Layer 'git'
+    Layer 'text-align'
 
 endfunction
 
