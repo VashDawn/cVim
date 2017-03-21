@@ -87,6 +87,10 @@ endfunction
 function! s:check_vim_plug(plug_path)
     if empty(glob(a:plug_path))
         echo '==> Downloading vim-plug ......'
+        " let g:curl_proxy = execute "!echo $http_proxy | grep -oP '(\d+\.){3}\d+:\d+'"
+        " echo g:curl_proxy
+        " execute '!curl -x ' . g:curl_proxy . ' -fLo ' . a:plug_path . ' --create-dirs ' .
+        "           \   'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
         execute '!curl -fLo ' . a:plug_path . ' --create-dirs ' .
                     \   'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     endif
