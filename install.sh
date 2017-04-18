@@ -4,7 +4,7 @@
 #   Thanks for spf13-vim.
 
 app_name='cVim'
-dot_cvim="$HOME/.cvim"
+dot_cvim="$VIM/.cvim"
 [ -z "$APP_PATH" ] && APP_PATH="$VIM/cVim"
 [ -z "$REPO_URI" ] && REPO_URI='https://github.com/vashdawn/cVim.git'
 [ -z "$REPO_BRANCH" ] && REPO_BRANCH='master'
@@ -158,8 +158,17 @@ function! Layers()
 
     " Default layers, recommended!
     Layer 'fzf'
+
+
+    Layer 'ycmd'
     Layer 'unite'
     Layer 'better-defaults'
+    Layer 'syntax-checking'
+    Layer 'tmux'
+    Layer 'programming'
+    Layer 'airline'
+    Layer 'git'
+    Layer 'text-align'
 
 endfunction
 
@@ -184,6 +193,7 @@ function! UserConfig()
     " color desert
 
 endfunction
+
 DOTCVIM
 ) >"$dot_cvim"
 
