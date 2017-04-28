@@ -95,7 +95,7 @@ sync_repo() {
     then
         msg "\033[1;34m==>\033[0m Trying to clone $repo_name"
         mkdir -p "$repo_path"
-        git clone -b "$repo_branch" "$repo_uri" "$repo_path"
+        git clone -b "$repo_branch" "$repo_uri" "$repo_path" --depth=1
         ret="$?"
         success "Successfully cloned $repo_name."
     else
@@ -153,7 +153,9 @@ generate_dot_cvim(){
         cat <<DOTCVIM
 " You can enable the existing layers in cVim and
 " exclude the partial plugins in a certain layer.
-" The command Layer and Exlcude are vaild in the function Layers().
+" The command Layer is vaild in the function Layers().
+" Use exclude option if you don't want the full Layer,
+" e.g., Layer 'better-defaults', { 'exclude': 'itchyny/vim-cursorword' }
 function! Layers()
 
     " Default layers, recommended!
