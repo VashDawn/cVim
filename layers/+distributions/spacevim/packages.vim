@@ -9,5 +9,3 @@ MP 'tomasr/molokai'
 MP 'chriskempson/base16-vim'
 
 MP 'vashdawn/cVim-default'
-
-
