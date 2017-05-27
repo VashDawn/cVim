@@ -52,7 +52,14 @@ augroup SPACEVIM_BASIC
 
         if g:WINDOWS
             " set guifont=Consolas:h13
-            set guifont=DejaVu_Sans_Mono_for_Powerline:h13:cANSI
+            " let h_name=echom system("hostname")
+            " if h_name == "Ifinity"
+            "   font_hight=10
+            " else
+            "   font_hight=13
+            " endif
+            " set guifont=Inziu_IosevkaCC_Slab_SC:h12:cANSI
+            set guifont=DejaVu_Sans_Mono_for_Powerline:h12:cANSI
         endif
     endif
 augroup END
