@@ -29,5 +29,10 @@ scriptencoding=utf-8
     let g:airline#extensions#ale#error_symbol = '•'
     let g:airline#extensions#ale#warning_symbol = '•'
 
-    let g:airline_powerline_fonts=1
+    " Configuration in ConEmu
+    if !empty($CONEMUBUILD)
+        let g:airline_powerline_fonts=0
+    else
+        let g:airline_powerline_fonts=1
+    endif
 " }
