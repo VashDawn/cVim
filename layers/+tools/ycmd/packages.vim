@@ -8,9 +8,9 @@ function! BuildYCM(info)
     " - force:  set on PlugInstall! or PlugUpdate!
     if a:info.status ==# 'installed' || a:info.force
         if !g:WINDOWS
-            !./install.py --clang-completer
+            !python3 ./install.py --clang-completer
         else
-            !python ./install.py --clang-completer
+            !python3 ./install.py --clang-completer
     endif
 endfunction
 
